@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamTV - Films et Séries Gratuits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables CSS */
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #0f3460;
+            --highlight-color: #e94560;
+            --text-color: #ffffff;
+            --text-secondary: #b0b0b0;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* Reset et styles de base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background-color: rgba(22, 33, 62, 0.9);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--highlight-color);
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        nav a:hover {
+            background-color: var(--accent-color);
+            color: var(--highlight-color);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 0.5rem 1rem;
+            width: 300px;
+        }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            width: 100%;
+            padding: 0.5rem;
+            outline: none;
+        }
+
+        .search-bar input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-bar button {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-bar button:hover {
+            color: var(--highlight-color);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--highlight-color), #ff7b9c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--highlight-color);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.4);
+        }
+
+        /* Channels Grid */
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            display: inline-block;
+        }
+
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .channel-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+        }
+
+        .channel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .channel-logo {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--secondary-color);
+            padding: 1rem;
+        }
+
+        .channel-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .channel-info {
+            padding: 1.5rem;
+        }
+
+        .channel-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--highlight-color);
+        }
+
+        .channel-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .watch-button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            width: 100%;
+            text-align: center;
+        }
+
+        .watch-button:hover {
+            background-color: var(--highlight-color);
+        }
+
+        /* Video Player */
+        .video-player-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .video-player-container.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .video-player-container.fullscreen {
+            padding: 0;
+            align-items: stretch;
+        }
+
+        .video-player-container.fullscreen .video-player {
+            width: 100%;
+            max-width: none;
+            height: 100%;
+            border-radius: 0;
+        }
+
+        .video-player-container.fullscreen .video-frame {
+            height: calc(100vh - 60px);
+        }
+
+        .video-player {
+            width: 90%;
+            max-width: 1000px;
+            background-color: var(--primary-color);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: var(--secondary-color);
+        }
+
+        .player-header h3 {
+            color: var(--highlight-color);
+        }
+
+        .player-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .player-controls button {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .player-controls button:hover {
+            background: var(--highlight-color);
+            transform: scale(1.1);
+        }
+
+        .video-frame {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--secondary-color);
+            padding: 3rem 2rem 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--highlight-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--highlight-color);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--highlight-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-bar {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .channels-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .video-frame {
+                height: 300px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .hero {
+                padding: 2rem 0;
+            }
+
+            .channels-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .player-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-play-circle"></i>
+                <span>StreamTV</span>
+            </div>
+            
+            <nav>
+                <ul>
+                    <li><a href="#"><i class="fas fa-home"></i> Accueil</a></li>
+                    <li><a href="#"><i class="fas fa-film"></i> Films</a></li>
+                    <li><a href="#"><i class="fas fa-tv"></i> Séries</a></li>
+                    <li><a href="#"><i class="fas fa-broadcast-tower"></i> Chaînes</a></li>
+                </ul>
+            </nav>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Rechercher un film, série ou chaîne...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1>Films & Séries en Streaming Gratuit</h1>
+                <p>Découvrez une vaste sélection de films, séries et chaînes TV en direct. Profitez d'un contenu de qualité sans frais d'abonnement.</p>
+                <a href="#" class="cta-button">Commencer à regarder <i class="fas fa-arrow-right"></i></a>
+            </section>
+
+            <!-- Channels Section -->
+            <section class="channels-section">
+                <h2 class="section-title">Chaînes en Direct</h2>
+                <div class="channels-grid" id="channels-grid">
+                    <!-- Les chaînes seront ajoutées dynamiquement ici -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Video Player -->
+    <div class="video-player-container" id="video-player">
+        <div class="video-player">
+            <div class="player-header">
+                <h3 id="player-title">Lecture en cours</h3>
+                <div class="player-controls">
+                    <button id="fullscreen-toggle" title="Plein écran">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <button class="close-player" id="close-player" title="Fermer">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <iframe class="video-frame" id="video-frame" src="" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>À propos de StreamTV</h3>
+                <p>StreamTV est une plateforme de streaming gratuite qui vous permet de regarder vos films, séries et chaînes TV préférés sans frais d'abonnement.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Liens rapides</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Accueil</a></li>
+                    <li><a href="#">Films</a></li>
+                    <li><a href="#">Séries</a></li>
+                    <li><a href="#">Chaînes TV</a></li>
+                    <li><a href="#">Nouveautés</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Centre d'aide</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Conditions d'utilisation</a></li>
+                    <li><a href="#">Politique de confidentialité</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Développeur</h3>
+                <p>Trésor Mika Lankoandé</p>
+                <p>Développeur Full-Stack</p>
+                <p>Email: <a href="mailto:tresormikalankoande@gmail.com">tresormikalankoande@gmail.com</a></p>
+                <p>GitHub: <a href="https://github.com/tresormika">tresormika</a></p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 StreamTV. Tous droits réservés. | Conçu et développé par Trésor Mika Lankoandé</p>
+        </div>
+    </footer>
+
+    <script>
+        // Données des chaînes
+        const channels = [
+            {
+                name: "Canal+ Cinéma",
+                description: "Canal+ Cinéma est une chaîne de télévision thématique française du groupe Canal+ qui diffuse exclusivement des films. Elle propose une large sélection de films de tous genres (drame, comédie, action, horreur, etc.) et de toutes les périodes, ainsi que des courts métrages.",
+                icon: "https://thumb.canalplus.pro/http/unsafe/canalplus-cdn.canal-plus.io/p1/channel/198/canal-ouah/CHN43FN/CHN43FN_198_29082023",
+                link: "https://play.frembed.icu/api/player.php?id=50"
+            },
+            {
+                name: "Bein Sport 1",
+                description: "beIN SPORTS 1 est une chaîne de télévision privée française spécialisée dans le sport, faisant partie d'un réseau de chaînes du groupe beIN Media Group. Elle diffuse une large gamme de compétitions sportives, notamment de football (comme la Ligue 1, la Liga, la Bundesliga), de tennis (Wimbledon), et d'autres sports.",
+                icon: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Logo_beIN_SPORTS_1.png",
+                link: "https://fstv.lol/player/fsplayer.php?id=44"
+            },
+            {
+                name: "France 24",
+                description: "France 24 est un réseau international français d'information continue, détenu à 100 % par l'État français via la société holding France Médias Monde. La chaîne est disponible en quatre langues : français, anglais, arabe et espagnol, et est diffusée 24h/24 dans le monde entier.",
+                icon: "https://upload.wikimedia.org/wikipedia/fr/2/24/Logos_FRANCE24_RVB_2013.svg",
+                link: "https://play.frembed.icu/api/player.php?id=85"
+            },
+            {
+                name: "Boomerang",
+                description: "Boomerang est une chaîne de télévision française détenue par Warner Bros. Discovery International, spécialisée dans la diffusion de programmes d'animation destinés aux enfants. Elle propose un mélange de dessins animés classiques et contemporains.",
+                icon: "https://upload.wikimedia.org/wikipedia/commons/3/35/Boomerang_2014_logo.svg",
+                link: "https://play.frembed.icu/api/player.php?id=94"
+            }
+        ];
+
+        // Éléments DOM
+        const channelsGrid = document.getElementById('channels-grid');
+        const videoPlayer = document.getElementById('video-player');
+        const videoFrame = document.getElementById('video-frame');
+        const playerTitle = document.getElementById('player-title');
+        const closePlayerBtn = document.getElementById('close-player');
+        const fullscreenToggle = document.getElementById('fullscreen-toggle');
+
+        // Variables d'état
+        let isFullscreen = false;
+
+        // Générer les cartes de chaînes
+        function generateChannelCards() {
+            channelsGrid.innerHTML = '';
+            
+            channels.forEach(channel => {
+                const card = document.createElement('div');
+                card.className = 'channel-card';
+                card.innerHTML = `
+                    <div class="channel-logo">
+                        <img src="${channel.icon}" alt="${channel.name}" onerror="this.src='https://via.placeholder.com/300x150/16213e/ffffff?text=Logo+Non+Disponible'">
+                    </div>
+                    <div class="channel-info">
+                        <h3>${channel.name}</h3>
+                        <p>${channel.description}</p>
+                        <a href="#" class="watch-button" data-link="${channel.link}" data-name="${channel.name}">
+                            <i class="fas fa-play"></i> Regarder maintenant
+                        </a>
+                    </div>
+                `;
+                
+                channelsGrid.appendChild(card);
+            });
+            
+            // Ajouter les écouteurs d'événements aux boutons de lecture
+            document.querySelectorAll('.watch-button').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const link = this.getAttribute('data-link');
+                    const name = this.getAttribute('data-name');
+                    openVideoPlayer(link, name);
+                });
+            });
+        }
+
+        // Ouvrir le lecteur vidéo
+        function openVideoPlayer(link, name) {
+            videoFrame.src = link;
+            playerTitle.textContent = name;
+            videoPlayer.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Réinitialiser l'état du plein écran
+            if (isFullscreen) {
+                toggleFullscreen();
+            }
+        }
+
+        // Fermer le lecteur vidéo
+        function closeVideoPlayer() {
+            videoPlayer.classList.remove('active');
+            videoFrame.src = '';
+            document.body.style.overflow = 'auto';
+            
+            // Réinitialiser l'état du plein écran
+            if (isFullscreen) {
+                toggleFullscreen();
+            }
+        }
+
+        // Basculer le mode plein écran
+        function toggleFullscreen() {
+            isFullscreen = !isFullscreen;
+            
+            if (isFullscreen) {
+                videoPlayer.classList.add('fullscreen');
+                fullscreenToggle.innerHTML = '<i class="fas fa-compress"></i>';
+                fullscreenToggle.setAttribute('title', 'Quitter le plein écran');
+            } else {
+                videoPlayer.classList.remove('fullscreen');
+                fullscreenToggle.innerHTML = '<i class="fas fa-expand"></i>';
+                fullscreenToggle.setAttribute('title', 'Plein écran');
+            }
+        }
+
+        // Gérer la touche Échap pour quitter le plein écran
+        function handleKeyPress(e) {
+            if (e.key === 'Escape' && isFullscreen) {
+                toggleFullscreen();
+            }
+        }
+
+        // Événements
+        closePlayerBtn.addEventListener('click', closeVideoPlayer);
+        fullscreenToggle.addEventListener('click', toggleFullscreen);
+        
+        videoPlayer.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVideoPlayer();
+            }
+        });
+
+        document.addEventListener('keydown', handleKeyPress);
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            generateChannelCards();
+        });
+    </script>
+</body>
+</html>
