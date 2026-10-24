@@ -1,7 +1,3 @@
-# StreamTV - Site de Streaming de Films et Séries
-
-Voici le fichier README.md pour votre projet GitHub :
-
 
 # StreamTV - Plateforme de Streaming Gratuite
 
