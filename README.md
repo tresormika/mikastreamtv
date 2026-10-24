@@ -102,7 +102,7 @@ streamtv/
 
 ## 📄 Licence
 
-© 2025 StreamTV. Tous droits réservés.
+© 2026 StreamTV. Tous droits réservés.
 Développé par Trésor Mika Lankoandé.
 
 ## 🤝 Contribution
@@ -125,14 +125,3 @@ Pour toute question ou problème, veuillez :
 
 ⭐ N'oubliez pas de donner une étoile au projet si vous l'aimez !
 
-
-## Points forts de ce README :
-
-1. **Visuel attractif** : Images du projet en tête
-2. **Structure claire** : Sections bien organisées
-3. **Informations techniques** : Stack technique détaillée
-4. **Guide d'utilisation** : Instructions complètes
-5. **Responsive design** : Capture d'écran du lecteur
-6. **Informations développeur** : Coordonnées et portfolio
-7. **Instructions contribution** : Processus clair pour les contributeurs
-8. **Licence** : Mention de copyright 2025
